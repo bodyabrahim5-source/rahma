@@ -1,30 +1,22 @@
 const CACHE_NAME = 'rahma-love-space-v1';
 const ASSETS = [
-  '/rahma/',
-  '/rahma/index.html',
-  '/rahma/style.css',
-  '/rahma/manifest.json',
-  '/rahma/romantic-bg.mp3',
-  '/rahma/intro-bg.mp4',
-  '/rahma/memory1.jpg',
-  '/rahma/memory2.jpg',
-  '/rahma/tagfeela1.jpg',
-  '/rahma/tagfeela2.jpg',
-  '/rahma/love1.jpg',
-  '/rahma/love2.jpg',
-  '/rahma/love3.jpg',
-  '/rahma/love4.jpg',
-  '/rahma/icon-192.png',
-  '/rahma/icon-512.png'
+  './',
+  './index.html',
+  './style.css',
+  './manifest.json',
+  './bg-music.mp4',
+  './intro-video.mp4',
+  './photo1.jpg',
+  './icon.jpg' // ضفنا الأيقونة المربعة هنا عشان تتسيف أوفلاين
 ];
 
-// مرحلة التثبيت ورفع الملفات في الكاش
+// مرحلة التثبيت ورفع الملفات الأساسية في الكاش
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       console.log('Caching essential assets for offline love connectivity...');
       return cache.addAll(ASSETS);
-    })
+    }).then(() => self.skipWaiting()) // لتفعيل السيرفس وركر فوراً بدون انتظار
   );
 });
 
@@ -39,7 +31,7 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
@@ -47,6 +39,7 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(cachedResponse => {
+      // لو الملف موجود في الكاش رجعه، لو مش موجود هاته من السيرفر عادي
       return cachedResponse || fetch(event.request);
     })
   );

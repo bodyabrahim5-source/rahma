@@ -1,0 +1,177 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: 'Tajawal', sans-serif;
+    background-color: #0c0c0c;
+    color: #ffffff;
+    overflow-x: hidden;
+    direction: rtl;
+}
+
+/* --- أسطوانة الموسيقى العائمة --- */
+.music-disc {
+    position: fixed; top: 20px; left: 20px; width: 50px; height: 50px;
+    background: linear-gradient(45deg, #ff2a5f, #ff7e40);
+    border-radius: 50%; display: flex; justify-content: center; align-items: center;
+    font-size: 1.5rem; cursor: pointer; z-index: 10000;
+    box-shadow: 0 4px 15px rgba(255, 42, 95, 0.6);
+    transition: transform 0.3s, opacity 0.5s;
+}
+.music-disc.hidden { opacity: 0; pointer-events: none; }
+.spinning { animation: spin 4s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* --- القلوب الطايرة --- */
+#hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; overflow: hidden; }
+.floating-heart { position: absolute; bottom: -10px; color: #ff2a5f; animation: flyUp linear forwards; opacity: 0.8; }
+@keyframes flyUp {
+    0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.8; }
+    100% { transform: translateY(-105vh) translateX(50px) rotate(360deg); opacity: 0; }
+}
+
+/* --- الشاشة الافتتاحية --- */
+#intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 1s ease-out, visibility 1s; }
+#intro-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: -1; }
+.intro-content { text-align: center; padding: 20px; }
+.main-title { font-size: 3.2rem; margin-bottom: 20px; color: #ff3366; text-shadow: 0 0 10px rgba(255,51,102,0.5); }
+.sub-title { font-size: 1.4rem; margin-bottom: 40px; color: #e5e5e5; line-height: 1.7; }
+#explore-btn { padding: 14px 45px; font-size: 1.25rem; font-family: 'Cairo', sans-serif; color: white; background: linear-gradient(45deg, #ff2a5f, #ff7e40); border: none; border-radius: 30px; cursor: pointer; box-shadow: 0 5px 25px rgba(255, 42, 95, 0.5); transition: transform 0.3s; animation: pulse 2s infinite alternate; }
+.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* --- الدشبرد --- */
+.hidden-dashboard { opacity: 0; transform: translateY(30px); transition: all 1.5s ease-in-out; }
+.show-dashboard { opacity: 1; transform: translateY(0); }
+.dash-header { text-align: center; padding: 35px 20px; background: #141414; border-bottom: 2px solid #ff2a5f; cursor: pointer; }
+.dash-header h2 { color: #ff2a5f; font-family: 'Cairo', sans-serif; margin-bottom: 15px; }
+
+.love-counter-box { background: rgba(255, 42, 95, 0.08); padding: 15px; border-radius: 15px; display: inline-block; border: 1px solid rgba(255, 42, 95, 0.2); margin-top: 5px; }
+.counter-title { font-size: 0.95rem; color: #aaa; margin-bottom: 5px; }
+#live-timer { font-family: 'Cairo', sans-serif; font-size: 1.2rem; color: #fff; font-weight: bold; }
+#live-timer span { color: #ff7e40; font-size: 1.4rem; margin: 0 3px; text-shadow: 0 0 5px rgba(255,126,64,0.3); }
+
+.dash-nav { display: flex; justify-content: center; flex-wrap: wrap; background: #1f1f1f; padding: 10px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+.nav-btn { background: transparent; border: none; color: #b0b0b0; padding: 10px 18px; font-size: 0.95rem; font-family: 'Cairo', sans-serif; cursor: pointer; transition: 0.3s; margin: 5px; border-radius: 25px; }
+.nav-btn:hover, .nav-btn.active { background: #ff2a5f; color: white; box-shadow: 0 2px 10px rgba(255,42,95,0.4); }
+
+.dash-content { padding: 40px 20px; max-width: 800px; margin: 0 auto; }
+.tab-section { display: none; }
+.tab-section.active-section { display: block; animation: fadeIn 0.6s ease-in-out; }
+
+/* البرطمان والبوب أب */
+.jar-container { text-align: center; padding: 30px 10px; }
+.jar-container h3 { margin-bottom: 15px; color: #ff2a5f; font-size: 1.8rem; }
+.jar-wrapper { font-size: 9rem; cursor: pointer; display: inline-block; animation: float 3s ease-in-out infinite; transition: transform 0.3s; }
+.jar-wrapper:hover { transform: scale(1.15) rotate(8deg); }
+
+.modal { display: none; position: fixed; z-index: 1000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); }
+.modal-content { background: #181818; margin: 8% auto; padding: 25px; width: 90%; max-width: 480px; border-radius: 20px; text-align: center; border: 2px solid #ff2a5f; position: relative; box-shadow: 0 0 30px rgba(255,42,95,0.2); }
+.img-frame { width: 100%; height: 320px; background-color: #111; border-radius: 12px; overflow: hidden; margin-bottom: 20px; display: flex; justify-content: center; align-items: center; }
+.modal-content img { width: 100%; height: 100%; object-fit: contain; }
+.close-btn { position: absolute; top: 12px; right: 22px; font-size: 2.2rem; color: #888; cursor: pointer; }
+
+/* شريط الذكريات المطور */
+.timeline { position: relative; padding: 20px 0; }
+.timeline::before { content: ''; position: absolute; top: 0; right: 30px; height: 100%; width: 4px; background: linear-gradient(to bottom, #ff2a5f, #ff7e40); border-radius: 2px; }
+.timeline-item { position: relative; margin-bottom: 50px; padding-right: 60px; transition: transform 0.4s ease; }
+.timeline-item::before { content: '❤️'; position: absolute; right: 19px; top: 12px; background: #0c0c0c; font-size: 1.3rem; z-index: 10; padding: 2px; }
+
+.scroll-shake-active { animation: softShake 1s ease-in-out; }
+@keyframes softShake {
+    0%, 100% { transform: translateX(0) scale(1); }
+    15% { transform: translateX(-8px) rotate(-1.5deg); }
+    30% { transform: translateX(6px) rotate(1.2deg); }
+}
+
+.timeline-img-frame { width: 100%; height: 380px; background-color: #151515; border-radius: 15px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+.timeline-img-frame img { width: 100%; height: 100%; object-fit: contain; }
+.timeline-text { background: #161616; padding: 20px; border-radius: 15px; margin-top: 15px; border-right: 4px solid #ff2a5f; }
+.timeline-text h4 { color: #ff2a5f; }
+
+/* التغفيلات */
+.tagfeelat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 25px; padding: 15px 0; }
+.flip-card { background-color: transparent; width: 100%; height: 430px; perspective: 1000px; }
+.flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275); transform-style: preserve-3d; }
+.flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+.flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 15px; }
+.flip-card-front { background: #161616; border: 2px dashed #ff2a5f; }
+.flip-card-back { background: #1e1e1e; border: 2px solid #ff2a5f; transform: rotateY(180deg); justify-content: space-between; }
+.back-img-frame { width: 100%; height: 75%; background-color: #111; border-radius: 12px; overflow: hidden; display: flex; justify-content: center; align-items: center; }
+.back-img-frame img { width: 100%; height: 100%; object-fit: contain; }
+.tagfeela-desc { font-size: 0.95rem; margin-top: 10px; height: 20%; display: flex; align-items: center; justify-content: center; }
+
+/* 🧠 تصميم سكشن الكويز الجديد */
+.quiz-container { text-align: center; }
+.quiz-container h3 { color: #ff2a5f; margin-bottom: 10px; font-size: 1.8rem; }
+.quiz-subtitle { color: #aaa; margin-bottom: 30px; }
+.quiz-card { background: #161616; border: 1px solid #ff2a5f; border-radius: 20px; padding: 30px 20px; position: relative; max-width: 500px; margin: 0 auto; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.quiz-progress { position: absolute; top: 15px; left: 20px; font-size: 0.85rem; color: #ff7e40; font-weight: bold; }
+.quiz-card h4 { font-size: 1.3rem; margin-bottom: 25px; color: #fff; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 15px; }
+.quiz-opt-btn { background: #222; border: 1px solid #444; color: #fff; padding: 14px; border-radius: 30px; font-family: 'Cairo', sans-serif; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; }
+.quiz-opt-btn:hover { background: #ff2a5f; border-color: #ff2a5f; transform: scale(1.02); }
+.quiz-result-box { background: #161616; border: 2px solid #2ecc71; border-radius: 20px; padding: 30px; max-width: 500px; margin: 0 auto; }
+.prize-badge { background: linear-gradient(45deg, #f1c40f, #f39c12); color: #000; font-weight: bold; padding: 10px 20px; border-radius: 20px; display: inline-block; margin-top: 15px; }
+
+/* 🔐 تصميم التيرمينال السيبراني والتشفير */
+.cipher-box { max-width: 550px; margin: 30px auto; background: #050505; border: 1px solid #1abc9c; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 20px rgba(26,188,156,0.2); text-align: right; }
+.terminal-header { background: #111; padding: 10px; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid #222; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #ff5f56; } .dot.yellow { background: #ffbd2e; } .dot.green { background: #27c93f; }
+.terminal-title { font-size: 0.8rem; color: #666; font-family: monospace; margin-right: 10px; }
+.terminal-body { padding: 25px; font-family: monospace; }
+.terminal-text { color: #1abc9c; font-size: 1rem; margin-bottom: 10px; }
+#cipher-key { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #2ecc71; border-radius: 5px; font-size: 1.1rem; text-align: center; margin-bottom: 15px; outline: none; }
+.cipher-btn { width: 100%; padding: 12px; background: #1abc9c; border: none; color: #000; font-weight: bold; border-radius: 5px; cursor: pointer; font-family: 'Cairo', sans-serif; transition: background 0.3s; }
+.cipher-btn:hover { background: #16a085; }
+.terminal-loading { color: #f1c40f; margin-top: 15px; animation: blink 1s infinite; }
+.terminal-success { color: #2ecc71; margin-top: 15px; font-weight: bold; }
+.terminal-error { color: #e74c3c; margin-top: 15px; }
+.decrypted-msg { background: rgba(26,188,156,0.05); border-right: 3px solid #1abc9c; padding: 15px; margin-top: 15px; border-radius: 4px; font-family: 'Tajawal', sans-serif; }
+.decrypted-msg h4 { color: #1abc9c; margin-bottom: 8px; }
+.decrypted-msg p { line-height: 1.6; font-size: 0.95rem; color: #eee; }
+
+/* إضافات عامة */
+.hidden-element { display: none !important; }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); box-shadow: 0 5px 30px rgba(255, 42, 95, 0.7); } }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* --- أنيميشن قلوب النقر السحرية الجديدة --- */
+@keyframes flyUpClick {
+    0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(-100px) scale(1.5) rotate(45deg); opacity: 0; }
+}
+/* 📌 تصميم حائط الرسائل الملونة الجديد */
+.wall-container { text-align: center; }
+.wall-container h3 { color: #ff2a5f; margin-bottom: 10px; font-size: 1.8rem; }
+.wall-desc { color: #aaa; margin-bottom: 25px; }
+.note-input-box { max-width: 500px; margin: 0 auto 30px auto; display: flex; flex-direction: column; gap: 12px; }
+.note-input-box textarea { width: 100%; height: 90px; background: #161616; border: 1px solid #ff2a5f; border-radius: 12px; padding: 12px; color: #fff; font-family: 'Tajawal', sans-serif; resize: none; outline: none; }
+.add-note-btn { background: linear-gradient(45deg, #ff2a5f, #ff7e40); color: white; border: none; padding: 12px; border-radius: 25px; font-family: 'Cairo', sans-serif; font-weight: bold; cursor: pointer; transition: transform 0.2s; }
+.add-note-btn:hover { transform: scale(1.02); }
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; padding: 10px 0; }
+.sticky-note { padding: 18px; border-radius: 12px; color: #000; position: relative; text-align: right; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s; transform: rotate(-1deg); }
+.sticky-note:nth-child(even) { transform: rotate(1.5deg); }
+.sticky-note:hover { transform: scale(1.05) rotate(0deg) !important; z-index: 10; }
+.sticky-note p { font-size: 0.95rem; font-weight: bold; line-height: 1.5; word-wrap: break-word; }
+.note-date { font-size: 0.75rem; color: #555; display: block; margin-top: 10px; text-align: left; }
+.delete-note { position: absolute; top: 5px; right: 8px; font-size: 1.2rem; cursor: pointer; color: #666; transition: color 0.2s; line-height: 1; }
+.delete-note:hover { color: #ff2a5f; }
+/* 🎭 تصميم لوحة التحكم بالمزاج المطور (Mood Dashboard) */
+.mood-container { text-align: center; }
+.mood-container h3 { color: #ff2a5f; font-size: 1.8rem; margin-bottom: 10px; }
+.mood-desc { color: #aaa; margin-bottom: 30px; }
+.mood-buttons-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 600px; margin: 0 auto 35px auto; }
+.mood-btn { background: #161616; border: 1px solid #444; color: #fff; padding: 15px 10px; border-radius: 15px; font-family: 'Cairo', sans-serif; font-size: 1rem; font-weight: bold; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+.mood-btn:hover { background: #ff2a5f; border-color: #ff2a5f; transform: translateY(-3px); box-shadow: 0 6px 15px rgba(255, 42, 95, 0.4); }
+.mood-response-box { max-width: 550px; margin: 0 auto; background: linear-gradient(135deg, #1c1c1c, #111); border: 2px dashed #ff2a5f; border-radius: 20px; padding: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); opacity: 0; }
+.mood-icon-glow { font-size: 3rem; margin-bottom: 15px; animation: heartbeat 1.5s infinite; filter: drop-shadow(0 0 10px rgba(255,42,95,0.5)); }
+#mood-resp-text { color: #eee; font-size: 1.1rem; line-height: 1.7; font-weight: 500; text-align: justify; direction: rtl; }
+/* أنيميشن الظهور السلس للرد */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

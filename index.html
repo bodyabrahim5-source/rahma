@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عالمنا الخاص ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <video id="bg-music" src="bg-music.mp4" loop style="display:none;"></video>
+
+    <div id="music-control" class="music-disc hidden" onclick="toggleMusic()">🎵</div>
+
+    <div id="intro-screen">
+        <div class="video-overlay"></div>
+        <video autoplay muted loop playsinline id="intro-video">
+            <source src="intro-video.mp4" type="video/mp4">
+        </video>
+        <div class="intro-content">
+            <h1 class="main-title">رحمة حبيبتي ❤️</h1>
+            <p class="sub-title">ربنا يخليكي ليا وميحرمنيش منك، ونفضل طول العمر سوا.. ✨</p>
+            <button id="explore-btn" onclick="startExperience()">تصفح الآن</button>
+        </div>
+    </div>
+
+    <div id="hearts-container"></div>
+
+    <div id="main-dashboard" class="hidden-dashboard">
+        
+        <header class="dash-header" onclick="secretReset()">
+            <h2>🌸 بوابة عالمنا السري 🌸</h2>
+            <div class="love-counter-box">
+                <p class="counter-title">عداد ثواني وجودنا سوا في الدنيا: </p>
+                <div id="live-timer">
+                    <span id="days">0</span> يوم و <span id="hours">0</span> ساعة و <span id="minutes">0</span> دقيقة و <span id="seconds">0</span> ثانية
+                </div>
+            </div>
+        </header>
+
+        <nav class="dash-nav">
+            <button class="nav-btn active" onclick="switchTab('jar')">🏺 البرطمان</button>
+            <button class="nav-btn" onclick="switchTab('timeline')">📸 الذكريات</button>
+            <button class="nav-btn" onclick="switchTab('tagfeelat')">🤪 التغفيلات</button>
+            <button class="nav-btn" onclick="switchTab('quiz')">🧠 الكويز</button>
+            <button class="nav-btn" onclick="switchTab('cipher')">🔐 التشفير السري</button>
+            <button class="nav-btn" onclick="switchTab('mood')">🎭 حالتك المزاجية</button>
+            <button class="nav-btn" onclick="switchTab('wall')">📌 حائط الرسائل</button>
+        </nav>
+
+        <main class="dash-content">
+
+            <section id="jar-tab" class="tab-section active-section">
+                <div class="jar-container">
+                    <h3>🏺 برطمان الحب اليومي</h3>
+                    <p class="jar-desc">لكِ رسالة واحدة سحرية كل 24 ساعة.. جربي حظك النهاردة!</p>
+                    <div class="jar-wrapper" onclick="openJar()">
+                        <div class="jar-icon">🏺</div>
+                    </div>
+                    
+                    <div id="jar-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-btn" onclick="closeJar()">&times;</span>
+                            <div class="img-frame">
+                                <img id="jar-img" src="" alt="ذكرياتنا">
+                            </div>
+                            <p id="jar-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="timeline-tab" class="tab-section">
+                <h3>📸 شريط ذكرياتنا الحلوة</h3>
+                <p style="text-align:center; color:#888; font-size:0.85rem; margin-bottom:15px;">(انزل لتحت وشوف الصور وهي بتتحرك وترحب بيك 😉)</p>
+                <div class="timeline" id="timeline-container"></div>
+            </section>
+
+            <section id="tagfeelat-tab" class="tab-section">
+                <h3>🤪 ركن القفشات والتغفيلات (اللي أنتِ مغفلاني فيها وأنا نايم!)</h3>
+                <p style="text-align:center; color:#aaa; margin-bottom:10px;">ملف المؤامرات والجرائم الاحترافية أثناء غيابي عن الوعي 😂</p>
+                <p style="text-align:center; color:#ff2a5f; font-size:0.85rem; margin-bottom:20px;">📱 جربي تهزي التلفون في إيدك أو اسكرولي بسرعة وشوفي الشقلبة!</p>
+                <div class="tagfeelat-grid" id="tagfeelat-container"></div>
+            </section>
+
+            <section id="quiz-tab" class="tab-section">
+                <div class="quiz-container">
+                    <h3>🧠 كويز "أنتِ عارفاني قد إيه؟"</h3>
+                    <p class="quiz-subtitle">تحدي خاص لرحومي.. جاوبي صح عشان تدخلي السؤال اللي بعده!</p>
+                    
+                    <div id="quiz-card" class="quiz-card">
+                        <div class="quiz-progress"><span id="q-num">1</span>/3</div>
+                        <h4 id="quiz-question">جاري تحميل السؤال...</h4>
+                        <div id="quiz-feedback" style="color: #e74c3c; font-weight: bold; margin-bottom: 10px; min-height: 20px;"></div>
+                        <div class="quiz-options" id="quiz-options-box">
+                            </div>
+                    </div>
+                    <div id="quiz-result" class="quiz-result-box hidden-element">
+                        <h4 id="result-title">🎯 النتيجة</h4>
+                        <p id="result-text"></p>
+                        <div id="prize-zone"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cipher-tab" class="tab-section">
+                <div class="cipher-container">
+                    <h3>🔐 نظام فك التشفير الأمني الخاص</h3>
+                    <p class="cipher-desc">الملف ده مشفر بحماية عالية جداً، مفتاح فك التشفير هو (تاريخ ميلادك المميز بالكامل متبوعاً بفواصل فلاشات مثل: DD/M/YYYY)</p>
+                    
+                    <div class="cipher-box">
+                        <div class="terminal-header">
+                            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                            <span class="terminal-title">Secure_Decrypter.exe</span>
+                        </div>
+                        <div class="terminal-body">
+                            <p class="terminal-text">Enter Decryption Key:</p>
+                            <input type="text" id="cipher-key" placeholder="DD/M/YYYY">
+                            <button class="cipher-btn" onclick="attemptDecrypt()">Execute Decryption ⚡</button>
+                            <div id="cipher-output" class="cipher-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="mood-tab" class="tab-section">
+                <div class="mood-container">
+                    <h3>🎭 لوحة الدعم النفسي والتحكم بالمزاج</h3>
+                    <p class="mood-desc">طمني قلبي.. إيه هي حالتك المزاجية الحالية النهاردة يا روحي؟</p>
+                    <div class="mood-buttons-grid">
+                        <button class="mood-btn" onclick="triggerMoodResponse('happy')">🥰 مبسوطة ورايقة</button>
+                        <button class="mood-btn" onclick="triggerMoodResponse('sad')">🥺 زعلانة أو مخنوقة</button>
+                        <button class="mood-btn" onclick="triggerMoodResponse('tired')">🤯 مفردهة من المذاكرة</button>
+                        <button class="mood-btn" onclick="triggerMoodResponse('miss')">❤️ مشتاقة لك قوي</button>
+                    </div>
+                    <div id="mood-response-box" class="mood-response-box hidden-element">
+                        <div class="mood-icon-glow" id="mood-resp-icon"></div>
+                        <p id="mood-resp-text"></p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="wall-tab" class="tab-section">
+                <div class="wall-container">
+                    <h3>📌 حائط رسائلنا الملونة</h3>
+                    <p class="wall-desc">اكتبي رسالة أو كلمة سيبيهالي هنا على الحائط وهتفضل محفوظة تملي يا روحي ❤️</p>
+                    <div class="note-input-box">
+                        <textarea id="note-text" placeholder="اكتبي رسالتك هنا..."></textarea>
+                        <button class="add-note-btn" onclick="addStickyNote()">تثبيت الرسالة 📌</button>
+                    </div>
+                    <div class="notes-grid" id="notes-grid-container"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        let musicPlaying = false;
+        const bgMusic = document.getElementById('bg-music');
+        let clickCount = 0;
+
+        // تأثير نقر القلوب المتطور
+        document.addEventListener('click', function(e) {
+            if(musicPlaying) { createClickHeart(e.clientX, e.clientY); }
+        });
+
+        function createClickHeart(x, y) {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerText = '💖';
+            heart.style.position = 'fixed';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            heart.style.bottom = 'auto';
+            heart.style.animation = 'flyUpClick 1.2s linear forwards';
+            heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+            container.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 1200);
+        }
+
+        function secretReset() {
+            clickCount++;
+            if (clickCount === 3) {
+                localStorage.removeItem('lastOpenedJarDate');
+                alert("✨ تم تصفير البرطمان سرياً يا هندسة! تقدر تفتحه تاني دلوقتي كأنك أول مرة تفتح الموقع 😉");
+                clickCount = 0;
+            }
+            setTimeout(() => { clickCount = 0; }, 2000);
+        }
+
+        function startExperience() {
+            document.getElementById('intro-screen').classList.add('fade-out');
+            document.getElementById('main-dashboard').classList.remove('hidden-dashboard');
+            document.getElementById('main-dashboard').classList.add('show-dashboard');
+            
+            const musicCtrl = document.getElementById('music-control');
+            musicCtrl.classList.remove('hidden');
+            musicCtrl.classList.add('spinning');
+            
+            bgMusic.play().then(() => { musicPlaying = true; }).catch(err => console.log("المتصفح حجب التشغيل"));
+
+            setupNotifications();
+            startLiveTimer();
+            triggerHeartsStorm();
+            initScrollAnimations();
+            initShakeSensor();
+            loadQuizQuestion(); 
+            loadStickyNotes();
+
+            setTimeout(() => { document.getElementById('intro-screen').style.display = 'none'; }, 1000);
+        }
+
+        function toggleMusic() {
+            const musicCtrl = document.getElementById('music-control');
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicCtrl.classList.remove('spinning');
+                musicPlaying = false;
+            } else {
+                bgMusic.play().then(() => { musicCtrl.classList.add('spinning'); musicPlaying = true; });
+            }
+        }
+
+        function startLiveTimer() {
+            const startDate = new Date("January 1, 2025 00:00:00").getTime(); 
+            setInterval(() => {
+                const now = new Date().getTime();
+                const difference = now - startDate;
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                document.getElementById('days').innerText = days;
+                document.getElementById('hours').innerText = hours;
+                document.getElementById('minutes').innerText = minutes;
+                document.getElementById('seconds').innerText = seconds;
+            }, 1000);
+        }
+
+        function createHeart() {
+            const container = document.getElementById('hearts-container');
+            const heart = document.createElement('div');
+            heart.classList.add('floating-heart');
+            heart.innerText = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            container.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 5000);
+        }
+
+        function triggerHeartsStorm() {
+            for (let i = 0; i < 30; i++) { setTimeout(createHeart, i * 100); }
+        }
+
+        function setupNotifications() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") { sendMorningGreeting(); }
+                });
+            }
+        }
+
+        function sendMorningGreeting() {
+            const today = new Date().toDateString();
+            const lastGreeting = localStorage.getItem('lastMorningGreetingDate');
+            if (lastGreeting !== today) {
+                new Notification("صباح الخير يا رحومي! ☀️", {
+                    body: "صباح الخير يا قلب بابا.. يومك جميل ولطيف شبهك النهاردة ❤️✨",
+                    icon: "photo1.jpg"
+                });
+                localStorage.setItem('lastMorningGreetingDate', today);
+            }
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active-section'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active-section');
+            if(event && event.currentTarget) { event.currentTarget.classList.add('active'); }
+            triggerHeartsStorm();
+        }
+
+        const jarMessages = [
+            "صباح الخير يا خطيبتي الجميلة.. افتكرت النهاردة أول مرة شوفتك فيها وجمالك خطفني. ❤️",
+            "الرسالة دي بتقولك إني بحبك أكتر من امبارح وأقل من بكرة! 🌸",
+            "شكراً لإنك في حياتي وبتدعميني دايماً، ربنا يخليكي ليا يا رب يا روحي. ✨",
+            "ضحكتك دي هي اللي بتهون عليا أي تعب في الدنيا، خليكي دايماً بتضحكي 😉",
+            "وجودك جمبي أكبر نعمة ربنا رزقني بيها، يا رب نفضل سوا لآخر العمر."
+        ];
+
+        function openJar() {
+            const today = new Date().toDateString();
+            const lastOpened = localStorage.getItem('lastOpenedJarDate');
+            if (lastOpened === today) {
+                alert("استني بكرة يا رحومي عشان تشوفي رسالة جديدة! 😉 قفلنا الرصيد النهاردة ❤️");
+                return;
+            }
+            let currentIdx = parseInt(localStorage.getItem('jarMsgIndex') || 0);
+            if (currentIdx >= jarMessages.length) currentIdx = 0;
+
+            const selectedMsg = jarMessages[currentIdx];
+            const randomPhotoNum = Math.floor(Math.random() * 16) + 1;
+
+            document.getElementById('jar-text').innerText = selectedMsg;
+            document.getElementById('jar-img').src = `photo${randomPhotoNum}.jpg`;
+            document.getElementById('jar-modal').style.display = "block";
+            triggerHeartsStorm();
+
+            localStorage.setItem('lastOpenedJarDate', today);
+            localStorage.setItem('jarMsgIndex', currentIdx + 1);
+        }
+        function closeJar() { document.getElementById('jar-modal').style.display = "none"; }
+
+        // شريط الذكريات (1 لـ 16)
+        const timelineTexts = [
+            "أول الحكاية وبداية كل حاجة حلوة ✨", "الضحكة اللي خطفت قلبي من أول ثانية 🌸", 
+            "خروجة عالمية ميتشبعش منها البتة ❤️", "اليوم ده قفلنا ليفل السعادة سوا 🌟",
+            "سند لبعض في أي خطوة وأي مشوار 💪", "نظرة عينيكي بتلخص كلام كتير هيمان 🤫",
+            "أجمل خروجة وأحلى ذكريات مدونة تملي 💖", "معاك الدنيا بتتحول جنة وورد منور 🌹",
+            "ضحك وهزار من قلبنا بجد ع العفاريت 😂", "لما نكون رايقين ومفيش ورانا أي حاجة ☕",
+            "خطوة جديدة بنقرب فيها لحلمنا الكبير 💍", "أنا وأنتِ وبس والكون كله ورانا ملوش لزمة 🌌",
+            "كل تفصيلة معاكِ ليها طعم مميز خالص 🍬", "ربنا يديمك في حياتي يا أحلى نصيب مكتوب 🤍",
+            "وعد مني نفضل سوا ونعدي أي صعب في السكة 🤝",
+            "صورة بوشنا الحلوة اللي منورة دنيتي كلها.. أحلى ضحكة وأغلى ذكريات بالدنيا! 🥰❤️"
+        ];
+
+        const timelineContainer = document.getElementById('timeline-container');
+        for (let i = 1; i <= 16; i++) {
+            timelineContainer.innerHTML += `
+                <div class="timeline-item">
+                    <div class="timeline-img-frame"><img src="photo${i}.jpg" alt="صورة ${i}"></div>
+                    <div class="timeline-text">
+                        <h4>محطة رقم ${i} ❤️</h4>
+                        <p>${timelineTexts[i-1] || "ذكرى جميلة محفورة في القلب.. ✨"}</p>
+                    </div>
+                </div>`;
+        }
+
+        // 🤪 تعديل قصة التغفيلات بالكامل (الاصطياد أثناء النوم والفيديو كول ومع الأهل)
+        const tagfeelatComments = [
+            "بقيت أخاف أنام وأنتِ معايا كده.. أومال لما نتجوز هتعملي إيه؟ 😂 النومة دي وراها مؤامرة فيديو كول كاملة الأركان لتدمير هيبتي البرمجية!",        
+            "النظرة دي وأنا رايح في النوم تماماً ومش حاسس بالكون.. قفشتيني وأنا ماليش أي رد فعل دفاعي، برافو بجد على التكتيك 🏃‍♂️😂",
+            "تغفيلة لايف شهيرة من نص المكالمة.. أكون بتكلم وفجأة أسقط في النوم وتستغلي الموقف وتصوري عشان تبتزيني بالصور بعدين 😂📱", 
+            "سقوط الأنظمة الدفاعية لمهندس السايبر! نايم في أمان الله وسط العيلة وأنتِ بتخترقي حمايتي وتلقطي الكادرات العجيبة دي 🤫🔒", 
+            "لما نكون بنتكلم فيديو كول الفجر، وأقع في نص الكلام.. مبيفوتكيش ثانية يا رحومي، دايماً الكاميرا جاهزة للاصطياد ⚖️📸", 
+            "كنا بايتين مع بعض ونمت من كتر منتي فرهدتيني فاكره وأهلنا حوالينا ومطمن إن مفيش غدر.. نمت دقيقتين صحيت لقيت السكرين شوت ده جاهز في ثانية! 🤦‍♂️💤",  
+            "التغفيلة الكبرى.. مغفلاني عيني عينك وأنا نايم ومأمن لكِ والكل بيضحك عليا في الآخر بسبب اللقطة دي! بس قمر برضه دايماً تملي ❤️"
+        ];
+
+        const tagfeelatContainer = document.getElementById('tagfeelat-container');
+        for (let i = 18; i <= 24; i++) {
+            tagfeelatContainer.innerHTML += `
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front">
+                            <h4>تغفيلة رقم ${i - 17} 🤫</h4>
+                            <p>إياكِ تدوسي هتشوفي العجب!</p>
+                        </div>
+                        <div class="flip-card-back">
+                            <div class="back-img-frame"><img src="photo${i}.jpg" alt="تغفيلة"></div>
+                            <p class="tagfeela-desc">${tagfeelatComments[i-18]}</p>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        // 🧠 كويز الذكريات
+        const quizData = [
+            { q: "أكتر أكلة لما بنكون خارجين بنفكر ناكلها فوراً إيه؟", o: ["شاورما وبطاطس طحن 🌯", "بيتزا ومكرونة 🍕", "محشي طبعاً ومغامرات 🫔"], a: 2 },
+            { q: "إيه الكلمة اللي لما بخش أقولها لكِ بتعرفي فوراً إني عامل مصيبة؟", o: ["يا روحي", "ماما 🙈", "الحمد لله كله تمام"], a: 1 },
+            { q: "مين أكتر واحد بيحب التاني في المجرّة دي كلها وبدون منافسة؟", o: ["أنا طبعاً 😎", "رحومي النص بنص", "عبدالرحمن وبفارق المجرّة كلها! ❤️"], a: 2 }
+        ];
+        let currentQ = 0;
+
+        function loadQuizQuestion() {
+            document.getElementById('quiz-feedback').innerText = ""; 
+            if(currentQ < quizData.length) {
+                document.getElementById('q-num').innerText = currentQ + 1;
+                document.getElementById('quiz-question').innerText = quizData[currentQ].q;
+                const optionsBox = document.getElementById('quiz-options-box');
+                optionsBox.innerHTML = '';
+                quizData[currentQ].o.forEach((opt, idx) => {
+                    optionsBox.innerHTML += `<button class="quiz-opt-btn" onclick="checkQuizAnswer(${idx}, this)">${opt}</button>`;
+                });
+            } else {
+                showQuizResult();
+            }
+        }
+
+        function checkQuizAnswer(selectedIdx, btnElement) {
+            if(selectedIdx === quizData[currentQ].a) { 
+                btnElement.style.background = "#2ecc71";
+                btnElement.style.borderColor = "#2ecc71";
+                triggerHeartsStorm();
+                setTimeout(() => {
+                    currentQ++;
+                    loadQuizQuestion();
+                }, 600);
+            } else {
+                btnElement.style.background = "#e74c3c";
+                btnElement.style.borderColor = "#e74c3c";
+                document.getElementById('quiz-feedback').innerText = "خطأ! ❌ حاولي تاني يا روحي وركزي 😉";
+                setTimeout(() => {
+                    btnElement.style.background = "#222";
+                    btnElement.style.borderColor = "#444";
+                }, 800);
+            }
+        }
+
+        function showQuizResult() {
+            document.getElementById('quiz-card').classList.add('hidden-element');
+            const resultBox = document.getElementById('quiz-result');
+            resultBox.classList.remove('hidden-element');
+            document.getElementById('result-text').innerText = `مبروك يا قلب بابا! جاوبتي على كل الأسئلة صح ووصلتي للنهاية! 🎉`;
+            document.getElementById('prize-zone').innerHTML = `
+                <div class="prize-badge">🏆 كسبتِ ليفل الوحش الكامل!</div>
+                <p style="color:#ff2a5f; margin-top:10px; font-weight:bold;">لكِ فليكس وخروجة عالمية الأسبوع ده على حسابي مفيهاش نقاش! 😉❤️</p>`;
+        }
+
+        // 🔐 فك التشفير السيبراني
+        function attemptDecrypt() {
+            const key = document.getElementById('cipher-key').value.trim();
+            const output = document.getElementById('cipher-output');
+            output.innerHTML = "<p class='terminal-loading'>[!] Accessing Secure Vault... Checking Signatures...</p>";
+            
+            setTimeout(() => {
+                if(key === "22/8/2005") {
+                    output.innerHTML = `
+                        <p class='terminal-success'>[+] DECRYPTION SUCCESSFUL! CLEARANCE GRANTED. ❤️</p>
+                        <div class='decrypted-msg'>
+                            <h4>إلى مالكة قلبي وفك شفرات حياتي:</h4>
+                            <p>مهما كتبت من أكواد وبرمجت مواقع، هيفضل أعظم سطر برمجي كتبته في حياتي هو اليوم اللي دخلتِ فيه دنيتي ونورتيها. ربنا يخليكي ليا يا أغلى من كل تفاصيل العالم السيبراني ده! 💻🔒✨</p>
+                        </div>`;
+                    triggerHeartsStorm();
+                } else {
+                    output.innerHTML = "<p class='terminal-error'>[-] ERROR: INVALID DECRYPTION KEY. ACCESS DENIED. (اكتبي تاريخ ميلادك المميز بالفواصل الموضحة فوق يا روحي 😉)</p>";
+                }
+            }, 1500);
+        }
+
+        // 🎭 منطق لوحة التحكم بالمزاج والدعم النفسي الجديدة
+        function triggerMoodResponse(mood) {
+            const respBox = document.getElementById('mood-response-box');
+            const respIcon = document.getElementById('mood-resp-icon');
+            const respTxt = document.getElementById('mood-resp-text');
+            
+            respBox.classList.remove('hidden-element');
+            respBox.style.animation = 'none';
+            respBox.offsetHeight; // Reset animation trigger
+            respBox.style.animation = 'fadeInUp 0.6s ease forwards';
+            
+            triggerHeartsStorm();
+
+            if(mood === 'happy') {
+                respIcon.innerText = "🥰";
+                respTxt.innerText = "يدوم الرواق والضحكة يا رب! دامك مبسوطة يبقى الكوكب كله في سليم ودنيتي منورة. يلا نخطط لخروجة الأسبوع ده فوراً ونثبت الفرحة دي! 😉✨";
+            } else if(mood === 'sad') {
+                respIcon.innerText = "🥺";
+                respTxt.innerText = "كله إلا زعل رحومي! فكك من أي حاجة مضيقاكي في الدنيا، مفيش حاجة تستاهل تاخد ثانية من زعلك. أنا جمبك ومعاكِ دايماً وهعمل أي حاجة عشان ترجعي تضحكي حالا! ❤️";
+            } else if(mood === 'tired') {
+                respIcon.innerText = "🤯";
+                respTxt.innerText = "عاش يا بطلة السيبراني! المذاكرة والفريد هانت كلها وهتبقى ذكريات، خدي بريك ربع ساعة كلي فيه حاجة حلوة واسمعي أغنيتنا، فخور بيكِ وبمجهودك تملي يا دكتورتي 💪🌸";
+            } else if(mood === 'miss') {
+                respIcon.innerText = "❤️";
+                respTxt.innerText = "وأنا مشتاق لكِ بفارق المجرّة كلها وبعدد السطور البرمجية اللي في العالم! ثواني وأكلمك فيديو كول (ومش هنام وعد 😂) ونقعد نحكي في كل حاجة سوا ✨";
+            }
+        }
+
+        // 📌 منطق حائط الرسائل التفاعلي
+        function loadStickyNotes() {
+            const container = document.getElementById('notes-grid-container');
+            if(!container) return;
+            container.innerHTML = '';
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            notes.forEach((note, idx) => {
+                container.innerHTML += `
+                    <div class="sticky-note" style="background: ${note.color}">
+                        <span class="delete-note" onclick="deleteStickyNote(${idx})">&times;</span>
+                        <p>${note.text}</p>
+                        <span class="note-date">${note.date}</span>
+                    </div>`;
+            });
+        }
+
+        function addStickyNote() {
+            const txt = document.getElementById('note-text').value.trim();
+            if(!txt) return;
+            const colors = ['#fff799', '#ffc0cb', '#e0ffff', '#bfffbf', '#ffda9e'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            const today = new Date().toLocaleDateString('ar-EG');
+            notes.push({ text: txt, color: randomColor, date: today });
+            localStorage.setItem('loveNotes', JSON.stringify(notes));
+            document.getElementById('note-text').value = '';
+            loadStickyNotes();
+            triggerHeartsStorm();
+        }
+
+        function deleteStickyNote(idx) {
+            const notes = JSON.parse(localStorage.getItem('loveNotes') || '[]');
+            notes.splice(idx, 1);
+            localStorage.setItem('loveNotes', JSON.stringify(notes));
+            loadStickyNotes();
+        }
+
+        // الأنميشنز والـ Observers
+        function initScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('scroll-shake-active');
+                        setTimeout(() => { entry.target.classList.remove('scroll-shake-active'); }, 1200);
+                    }
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.timeline-item').forEach(item => { observer.observe(item); });
+        }
+
+        function initShakeSensor() {
+            let lastX, lastY, lastZ;
+            window.addEventListener('devicemotion', (event) => {
+                let acc = event.accelerationIncludingGravity;
+                if (!acc || !acc.x) return;
+                let currentX = acc.x; let currentY = acc.y; let currentZ = acc.z;
+                if (lastX) {
+                    let change = Math.abs(currentX - lastX) + Math.abs(currentY - lastY) + Math.abs(currentZ - lastZ);
+                    if (change > 18) { shuffleTagfeelatCards(); }
+                }
+                lastX = currentX; lastY = currentY; lastZ = currentZ;
+            });
+
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', () => {
+                let st = window.pageYOffset || document.documentElement.scrollTop;
+                if (Math.abs(st - lastScrollTop) > 75) {
+                    if(document.getElementById('tagfeelat-tab').classList.contains('active-section')) { shuffleTagfeelatCards(); }
+                }
+                lastScrollTop = st <= 0 ? 0 : st;
+            }, false);
+        }
+
+        function shuffleTagfeelatCards() {
+            document.querySelectorAll('.flip-card-inner').forEach(card => {
+                card.style.transform = card.style.transform === 'rotateY(180deg)' ? 'rotateY(0deg)' : 'rotateY(180deg)';
+            });
+        }
+
+        window.onclick = function(e) { if (e.target == document.getElementById('jar-modal')) closeJar(); }
+    </script>
+</body>
+</html>

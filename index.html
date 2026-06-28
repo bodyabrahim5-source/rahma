@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عالمنا الخاص ❤️</title>
     <link rel="stylesheet" href="style.css">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff2a5f">
 </head>
 <body>
 
@@ -39,13 +42,13 @@
         </header>
 
         <nav class="dash-nav">
-            <button class="nav-btn active" onclick="switchTab('jar')">🏺 البرطمان</button>
-            <button class="nav-btn" onclick="switchTab('timeline')">📸 الذكريات</button>
-            <button class="nav-btn" onclick="switchTab('tagfeelat')">🤪 التغفيلات</button>
-            <button class="nav-btn" onclick="switchTab('quiz')">🧠 الكويز</button>
-            <button class="nav-btn" onclick="switchTab('cipher')">🔐 التشفير السري</button>
-            <button class="nav-btn" onclick="switchTab('mood')">🎭 حالتك المزاجية</button>
-            <button class="nav-btn" onclick="switchTab('wall')">📌 حائط الرسائل</button>
+            <button class="nav-btn active" onclick="switchTab('jar', event)">🏺 البرطمان</button>
+            <button class="nav-btn" onclick="switchTab('timeline', event)">📸 الذكريات</button>
+            <button class="nav-btn" onclick="switchTab('tagfeelat', event)">🤪 التغفيلات</button>
+            <button class="nav-btn" onclick="switchTab('quiz', event)">🧠 الكويز</button>
+            <button class="nav-btn" onclick="switchTab('cipher', event)">🔐 التشفير السري</button>
+            <button class="nav-btn" onclick="switchTab('mood', event)">🎭 حالتك المزاجية</button>
+            <button class="nav-btn" onclick="switchTab('wall', event)">📌 حائط الرسائل</button>
         </nav>
 
         <main class="dash-content">
@@ -255,27 +258,8 @@
             for (let i = 0; i < 30; i++) { setTimeout(createHeart, i * 100); }
         }
 
-        function setupNotifications() {
-            if ("Notification" in window) {
-                Notification.requestPermission().then(permission => {
-                    if (permission === "granted") { sendMorningGreeting(); }
-                });
-            }
-        }
-
-        function sendMorningGreeting() {
-            const today = new Date().toDateString();
-            const lastGreeting = localStorage.getItem('lastMorningGreetingDate');
-            if (lastGreeting !== today) {
-                new Notification("صباح الخير يا رحومي! ☀️", {
-                    body: "صباح الخير يا قلب بابا.. يومك جميل ولطيف شبهك النهاردة ❤️✨",
-                    icon: "photo1.jpg"
-                });
-                localStorage.setItem('lastMorningGreetingDate', today);
-            }
-        }
-
-        function switchTab(tabName) {
+        // تم تصليح تمرير الـ event لضمان استقرار الانتقال بين التابات
+        function switchTab(tabName, event) {
             document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('active-section'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(tabName + '-tab').classList.add('active-section');
@@ -339,7 +323,7 @@
                 </div>`;
         }
 
-        // 🤪 تعديل قصة التغفيلات بالكامل (الاصطياد أثناء النوم والفيديو كول ومع الأهل)
+        // ركن القفشات والتغفيلات
         const tagfeelatComments = [
             "بقيت أخاف أنام وأنتِ معايا كده.. أومال لما نتجوز هتعملي إيه؟ 😂 النومة دي وراها مؤامرة فيديو كول كاملة الأركان لتدمير هيبتي البرمجية!",        
             "النظرة دي وأنا رايح في النوم تماماً ومش حاسس بالكون.. قفشتيني وأنا ماليش أي رد فعل دفاعي، برافو بجد على التكتيك 🏃‍♂️😂",
@@ -367,7 +351,7 @@
                 </div>`;
         }
 
-        // 🧠 كويز الذكريات
+        // كويز الذكريات
         const quizData = [
             { q: "أكتر أكلة لما بنكون خارجين بنفكر ناكلها فوراً إيه؟", o: ["شاورما وبطاطس طحن 🌯", "بيتزا ومكرونة 🍕", "محشي طبعاً ومغامرات 🫔"], a: 2 },
             { q: "إيه الكلمة اللي لما بخش أقولها لكِ بتعرفي فوراً إني عامل مصيبة؟", o: ["يا روحي", "ماما 🙈", "الحمد لله كله تمام"], a: 1 },
@@ -420,7 +404,7 @@
                 <p style="color:#ff2a5f; margin-top:10px; font-weight:bold;">لكِ فليكس وخروجة عالمية الأسبوع ده على حسابي مفيهاش نقاش! 😉❤️</p>`;
         }
 
-        // 🔐 فك التشفير السيبراني
+        // فك التشفير
         function attemptDecrypt() {
             const key = document.getElementById('cipher-key').value.trim();
             const output = document.getElementById('cipher-output');
@@ -441,7 +425,7 @@
             }, 1500);
         }
 
-        // 🎭 منطق لوحة التحكم بالمزاج والدعم النفسي الجديدة
+        // لوحة التحكم بالمزاج
         function triggerMoodResponse(mood) {
             const respBox = document.getElementById('mood-response-box');
             const respIcon = document.getElementById('mood-resp-icon');
@@ -449,7 +433,7 @@
             
             respBox.classList.remove('hidden-element');
             respBox.style.animation = 'none';
-            respBox.offsetHeight; // Reset animation trigger
+            respBox.offsetHeight; 
             respBox.style.animation = 'fadeInUp 0.6s ease forwards';
             
             triggerHeartsStorm();
@@ -469,7 +453,7 @@
             }
         }
 
-        // 📌 منطق حائط الرسائل التفاعلي
+        // حائط الرسائل
         function loadStickyNotes() {
             const container = document.getElementById('notes-grid-container');
             if(!container) return;
@@ -506,7 +490,6 @@
             loadStickyNotes();
         }
 
-        // الأنميشنز والـ Observers
         function initScrollAnimations() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -548,7 +531,35 @@
             });
         }
 
+        function setupNotifications() {
+            if ("Notification" in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === "granted") {
+                        const today = new Date().toDateString();
+                        if (localStorage.getItem('lastMorningGreetingDate') !== today) {
+                            new Notification("صباح الخير يا رحومي! ☀️", {
+                                body: "صباح الخير يا قلب بابا.. يومك جميل ولطيف شبهك النهاردة ❤️✨",
+                                icon: "photo1.jpg"
+                            });
+                            localStorage.setItem('lastMorningGreetingDate', today);
+                        }
+                    }
+                });
+            }
+        }
+
         window.onclick = function(e) { if (e.target == document.getElementById('jar-modal')) closeJar(); }
+
+        // ==========================================
+        // ⚡ تشغيل التطبيق أوفلاين (Service Worker Setup) 
+        // ==========================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('[+] Offline mode activated successfully!', reg))
+                    .catch(err => console.log('[-] Offline Service Worker failed:', err));
+            });
+        }
     </script>
 </body>
 </html>
